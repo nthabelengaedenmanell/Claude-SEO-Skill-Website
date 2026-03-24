@@ -1,0 +1,1331 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Claude SEO, GEO & AEO Skill by Nthabeleng Aeden Manell — AI-Powered Site Audits</title>
+  <meta name="description" content="Claude SEO Skill by Nthabeleng Aeden Manell. Provide a URL and Claude crawls your entire site then scores your SEO, GEO, and AEO across every dimension and delivers a professional downloadable report." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Red+Hat+Display:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap" rel="stylesheet" />
+
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --orange: #d97757;
+      --orange-dark: #c4633f;
+      --orange-light: #e8957a;
+      --orange-pale: rgba(217,119,87,0.12);
+      --bg: #0a0908;
+      --bg-2: #111009;
+      --surface: #161411;
+      --surface-2: #1e1b18;
+      --surface-3: #252220;
+      --border: rgba(255,255,255,0.07);
+      --border-2: rgba(255,255,255,0.04);
+      --text: #f0ece6;
+      --text-2: #9c9690;
+      --text-3: #5c5955;
+      --white: #ffffff;
+      --shadow-sm: 0 1px 3px rgba(0,0,0,0.4);
+      --shadow-md: 0 4px 20px rgba(0,0,0,0.35);
+      --shadow-lg: 0 12px 48px rgba(0,0,0,0.45);
+      --shadow-orange: 0 8px 32px rgba(217,119,87,0.22);
+      --radius-sm: 8px;
+      --radius-md: 12px;
+      --radius-lg: 18px;
+      --radius-xl: 24px;
+      --radius-full: 999px;
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: 'Red Hat Display', sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.6;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    ::-webkit-scrollbar { width: 5px; }
+    ::-webkit-scrollbar-track { background: var(--bg); }
+    ::-webkit-scrollbar-thumb { background: var(--surface-3); border-radius: 3px; }
+    ::-webkit-scrollbar-thumb:hover { background: var(--orange); }
+
+    /* ── UTILITY ── */
+    .container { width: 100%; max-width: 1160px; margin: 0 auto; padding: 0 24px; }
+
+    .section-label {
+      display: inline-flex; align-items: center; gap: 7px;
+      font-size: 11px; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase;
+      color: var(--orange); background: var(--orange-pale);
+      padding: 6px 13px; border-radius: var(--radius-full);
+      border: 1px solid rgba(217,119,87,0.18);
+    }
+    .section-title {
+      font-size: clamp(28px, 4vw, 44px); font-weight: 800; line-height: 1.12;
+      color: var(--text); letter-spacing: -0.025em;
+    }
+    .section-subtitle {
+      font-size: 18px; color: var(--white); max-width: 560px; line-height: 1.7;
+    }
+
+    /* ── BUTTONS ── */
+    .btn {
+      display: inline-flex; align-items: center; gap: 8px;
+      font-family: 'Red Hat Display', sans-serif;
+      font-size: 14px; font-weight: 700; text-decoration: none;
+      border: none; cursor: pointer; transition: all 0.2s ease;
+      border-radius: var(--radius-full); padding: 12px 24px;
+      white-space: nowrap; letter-spacing: 0.01em;
+    }
+    .btn-primary {
+      background: var(--orange); color: var(--white);
+      box-shadow: var(--shadow-orange);
+    }
+    .btn-primary:hover { background: var(--orange-dark); transform: translateY(-1px); box-shadow: 0 12px 36px rgba(217,119,87,0.32); }
+    .btn-primary:active { transform: translateY(0); }
+    .btn-secondary {
+      background: var(--surface-2); color: var(--text);
+      border: 1px solid var(--border);
+    }
+    .btn-secondary:hover { border-color: var(--orange); color: var(--orange); transform: translateY(-1px); box-shadow: var(--shadow-md); }
+    .btn-outline {
+      background: transparent; color: var(--orange);
+      border: 1px solid rgba(217,119,87,0.3); font-size: 13px; padding: 10px 20px;
+    }
+    .btn-outline:hover { background: var(--orange-pale); border-color: var(--orange); }
+    .btn-lg { font-size: 15px; padding: 14px 28px; }
+
+    /* ── NAVBAR ── */
+    #navbar {
+      position: fixed; top: 0; left: 0; right: 0; z-index: 1000;
+      background: rgba(10,9,8,0.8);
+      backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px);
+      border-bottom: 1px solid transparent;
+      transition: border-color 0.3s, box-shadow 0.3s;
+    }
+    #navbar.scrolled { border-color: var(--border); box-shadow: 0 1px 40px rgba(0,0,0,0.5); }
+    .nav-inner { display: flex; align-items: center; justify-content: space-between; height: 66px; gap: 24px; }
+    .nav-logo { display: flex; align-items: center; gap: 10px; text-decoration: none; flex-shrink: 0; }
+    .nav-logo-icon {
+      width: 34px; height: 34px; background: var(--orange);
+      border-radius: 9px; display: flex; align-items: center; justify-content: center;
+    }
+    .nav-logo-text { font-size: 14px; font-weight: 800; color: var(--text); line-height: 1.2; }
+    .nav-logo-text span { color: var(--orange); font-style: italic; }
+    .nav-links { display: flex; align-items: center; gap: 2px; list-style: none; }
+    .nav-links a {
+      display: block; padding: 7px 13px; font-size: 13px; font-weight: 600; color: var(--text-2);
+      text-decoration: none; border-radius: var(--radius-sm); transition: color 0.2s, background 0.2s;
+    }
+    .nav-links a:hover { color: var(--text); background: var(--surface-2); }
+    .nav-cta { display: flex; align-items: center; gap: 10px; flex-shrink: 0; }
+    .nav-hamburger { display: none; flex-direction: column; gap: 5px; cursor: pointer; padding: 8px; border-radius: var(--radius-sm); background: none; border: none; }
+    .nav-hamburger span { display: block; width: 22px; height: 2px; background: var(--text); border-radius: 2px; transition: all 0.3s; }
+    .mobile-menu {
+      display: none; position: fixed; top: 66px; left: 0; right: 0;
+      background: var(--surface); border-bottom: 1px solid var(--border);
+      padding: 16px 24px 24px; z-index: 999; box-shadow: 0 16px 48px rgba(0,0,0,0.5);
+    }
+    .mobile-menu.open { display: block; }
+    .mobile-menu ul { list-style: none; margin-bottom: 16px; }
+    .mobile-menu ul li a { display: block; padding: 12px 0; font-size: 15px; font-weight: 600; color: var(--text); text-decoration: none; border-bottom: 1px solid var(--border); }
+    .mobile-menu .btn { width: 100%; justify-content: center; margin-top: 8px; }
+
+    /* ── HERO ── */
+    #hero { padding: 144px 0 96px; background: var(--bg); overflow: hidden; position: relative; }
+    .hero-noise {
+      position: absolute; inset: 0; pointer-events: none;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");
+      opacity: 0.4;
+    }
+    .hero-glow-1 {
+      position: absolute; top: -180px; right: -150px;
+      width: 700px; height: 700px; border-radius: 50%;
+      background: radial-gradient(circle at center, rgba(217,119,87,0.10) 0%, transparent 65%);
+      pointer-events: none;
+    }
+    .hero-glow-2 {
+      position: absolute; bottom: -80px; left: -100px;
+      width: 500px; height: 500px; border-radius: 50%;
+      background: radial-gradient(circle at center, rgba(217,119,87,0.06) 0%, transparent 65%);
+      pointer-events: none;
+    }
+    .hero-inner { display: grid; grid-template-columns: 1fr 1fr; gap: 60px; align-items: center; position: relative; z-index: 1; }
+    .hero-eyebrow {
+      display: inline-flex; align-items: center; gap: 8px;
+      background: var(--surface-2); border: 1px solid var(--border);
+      border-radius: var(--radius-full); padding: 6px 14px 6px 8px;
+      font-size: 12px; font-weight: 600; color: var(--text-2);
+      margin-bottom: 26px; box-shadow: var(--shadow-sm);
+    }
+    .hero-eyebrow-dot {
+      width: 20px; height: 20px; background: var(--orange);
+      border-radius: 50%; display: flex; align-items: center; justify-content: center; flex-shrink: 0;
+    }
+    .hero-title {
+      font-size: clamp(36px, 5.5vw, 62px); font-weight: 900; line-height: 1.07;
+      letter-spacing: -0.03em; color: var(--text); margin-bottom: 22px;
+    }
+    .hero-title em { font-style: italic; color: var(--orange); }
+    .hero-desc { font-size: 19px; color: var(--white); line-height: 1.7; margin-bottom: 34px; max-width: 480px; }
+    .hero-actions { display: flex; align-items: center; gap: 12px; flex-wrap: wrap; margin-bottom: 40px; }
+    .hero-trust { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
+    .hero-trust-item { display: flex; align-items: center; gap: 6px; font-size: 12px; font-weight: 500; color: var(--text-3); }
+    .hero-trust-item svg { color: var(--orange); flex-shrink: 0; }
+    .hero-trust-sep { width: 3px; height: 3px; background: var(--text-3); border-radius: 50%; }
+
+    /* hero visual */
+    .hero-visual { position: relative; display: flex; justify-content: center; align-items: center; }
+    .hero-card {
+      background: var(--surface); border: 1px solid var(--border);
+      border-radius: var(--radius-xl); padding: 26px;
+      box-shadow: var(--shadow-lg); width: 100%; max-width: 430px; position: relative; z-index: 2;
+    }
+    .hero-card-header { display: flex; align-items: center; gap: 12px; margin-bottom: 18px; }
+    .hero-card-icon {
+      width: 42px; height: 42px; background: var(--orange);
+      border-radius: 11px; display: flex; align-items: center; justify-content: center; flex-shrink: 0;
+    }
+    .hero-card-title { font-size: 15px; font-weight: 800; color: var(--text); }
+    .hero-card-sub { font-size: 12px; color: var(--text-3); font-weight: 500; margin-top: 2px; }
+    .hero-url-bar {
+      background: var(--surface-2); border: 1px solid var(--border);
+      border-radius: var(--radius-sm); padding: 10px 14px;
+      font-size: 12px; color: var(--text-2); font-weight: 500;
+      display: flex; align-items: center; gap: 8px; margin-bottom: 18px;
+    }
+    .hero-url-bar span { color: var(--orange); font-weight: 700; }
+    .score-grid { display: grid; grid-template-columns: repeat(3,1fr); gap: 10px; margin-bottom: 18px; }
+    .score-box { background: var(--surface-2); border-radius: var(--radius-md); padding: 14px 10px; text-align: center; border: 1px solid var(--border-2); }
+    .score-label { font-size: 10px; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; color: var(--text-3); margin-bottom: 6px; }
+    .score-val { font-size: 28px; font-weight: 900; color: var(--text); line-height: 1; }
+    .score-val .score-denom { font-size: 13px; font-weight: 600; color: var(--text-3); }
+    .score-box.active .score-val { color: var(--orange); }
+    .hero-bar { display: flex; flex-direction: column; gap: 8px; }
+    .hero-bar-item { display: flex; align-items: center; gap: 10px; }
+    .hero-bar-label { font-size: 11px; font-weight: 600; color: var(--text-3); width: 78px; flex-shrink: 0; }
+    .hero-bar-track { flex: 1; height: 5px; background: var(--surface-3); border-radius: 3px; overflow: hidden; }
+    .hero-bar-fill { height: 100%; background: var(--orange); border-radius: 3px; transition: width 1.3s cubic-bezier(0.4,0,0.2,1); }
+    .hero-bar-pct { font-size: 11px; font-weight: 700; color: var(--text-2); width: 30px; text-align: right; flex-shrink: 0; }
+
+    .hero-float {
+      position: absolute; background: var(--surface-2);
+      border: 1px solid var(--border); border-radius: var(--radius-md);
+      padding: 10px 14px; font-size: 11px; font-weight: 700;
+      box-shadow: var(--shadow-md); display: flex; align-items: center; gap: 7px; color: var(--text);
+    }
+    .hero-float-1 { top: -18px; left: -28px; z-index: 3; }
+    .hero-float-2 { bottom: 28px; right: -22px; z-index: 3; }
+    .hero-float-dot { width: 7px; height: 7px; border-radius: 50%; flex-shrink: 0; }
+    .dot-green { background: #22c55e; }
+    .dot-orange { background: var(--orange); }
+
+    /* ── TRUST BAND ── */
+    .trust-band { padding: 36px 0; border-top: 1px solid var(--border); border-bottom: 1px solid var(--border); background: var(--surface); }
+    .trust-band-label { text-align: center; font-size: 11px; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; color: var(--text-3); margin-bottom: 24px; }
+    .trust-band-logos { display: flex; align-items: center; justify-content: center; gap: 36px; flex-wrap: wrap; }
+    .trust-logo { font-size: 13px; font-weight: 700; color: var(--text-3); display: flex; align-items: center; gap: 7px; transition: color 0.2s; }
+    .trust-logo:hover { color: var(--text-2); }
+
+    /* ── FEATURES ── */
+    #features { padding: 96px 0; background: var(--bg); }
+    .features-header { text-align: center; margin-bottom: 56px; }
+    .features-header .section-label { margin-bottom: 16px; }
+    .features-header .section-title { margin-bottom: 14px; }
+    .features-header .section-subtitle { margin: 0 auto; }
+    .features-grid { display: grid; grid-template-columns: repeat(3,1fr); gap: 16px; }
+    .feature-card {
+      background: var(--surface); border: 1px solid var(--border);
+      border-radius: var(--radius-lg); padding: 26px;
+      transition: all 0.25s ease; position: relative; overflow: hidden;
+    }
+    .feature-card::before {
+      content: ''; position: absolute; inset: 0;
+      background: linear-gradient(135deg, rgba(217,119,87,0.05), transparent);
+      opacity: 0; transition: opacity 0.25s;
+    }
+    .feature-card:hover { transform: translateY(-3px); box-shadow: var(--shadow-lg); border-color: rgba(217,119,87,0.18); }
+    .feature-card:hover::before { opacity: 1; }
+    .feature-card-icon {
+      width: 44px; height: 44px; border-radius: var(--radius-sm);
+      display: flex; align-items: center; justify-content: center; margin-bottom: 16px;
+    }
+    .feature-card-title { font-size: 16px; font-weight: 800; color: var(--text); margin-bottom: 10px; }
+    .feature-card-desc { font-size: 15px; color: var(--white); line-height: 1.65; margin-bottom: 18px; }
+    .feature-list { list-style: none; display: flex; flex-direction: column; gap: 7px; }
+    .feature-list li { display: flex; align-items: center; gap: 8px; font-size: 12px; font-weight: 600; color: var(--text-2); }
+    .feature-list li svg { color: var(--orange); flex-shrink: 0; }
+
+    .icon-bg-orange { background: rgba(217,119,87,0.14); }
+    .icon-bg-purple { background: rgba(139,92,246,0.12); }
+    .icon-bg-green  { background: rgba(34,197,94,0.10); }
+    .icon-bg-yellow { background: rgba(234,179,8,0.10); }
+    .icon-bg-red    { background: rgba(239,68,68,0.10); }
+    .icon-bg-blue   { background: rgba(14,165,233,0.10); }
+
+    .card-report {
+      background: linear-gradient(145deg, #0d1929 0%, #111e33 100%);
+      border-color: rgba(14,165,233,0.12);
+    }
+    .card-report .feature-card-title { color: var(--text); }
+    .card-report .feature-card-desc { color: rgba(255,255,255,0.75); }
+    .card-report .feature-list li { color: rgba(255,255,255,0.45); }
+    .card-report .feature-list li svg { color: #38bdf8; }
+
+    /* ── HOW IT WORKS ── */
+    #how-it-works { padding: 96px 0; background: var(--surface); }
+    .hiw-header { text-align: center; margin-bottom: 56px; }
+    .hiw-header .section-title { margin-top: 16px; }
+    .hiw-header .section-subtitle { margin: 14px auto 0; }
+    .hiw-steps { max-width: 680px; margin: 0 auto; display: flex; flex-direction: column; }
+    .hiw-step { display: grid; grid-template-columns: 64px 1fr; gap: 20px; padding-bottom: 36px; }
+    .hiw-step:last-child { padding-bottom: 0; }
+    .hiw-step-left { display: flex; flex-direction: column; align-items: center; }
+    .hiw-step-num {
+      width: 48px; height: 48px; border-radius: 50%;
+      background: var(--orange); color: var(--white);
+      font-size: 17px; font-weight: 900; display: flex; align-items: center; justify-content: center;
+      flex-shrink: 0; z-index: 1; box-shadow: 0 0 0 5px rgba(217,119,87,0.14);
+    }
+    .hiw-step-line { flex: 1; width: 1px; background: linear-gradient(to bottom, rgba(217,119,87,0.35), rgba(217,119,87,0.04)); margin-top: 8px; }
+    .hiw-step:last-child .hiw-step-line { display: none; }
+    .hiw-step-body { padding-top: 10px; }
+    .hiw-step-title { font-size: 18px; font-weight: 800; color: var(--text); margin-bottom: 8px; }
+    .hiw-step-desc { font-size: 16px; color: var(--white); line-height: 1.65; }
+    .hiw-step-tag {
+      display: inline-block; background: var(--orange-pale); border: 1px solid rgba(217,119,87,0.18);
+      border-radius: var(--radius-full); padding: 4px 12px; font-size: 11px; font-weight: 700;
+      color: var(--orange); margin-top: 12px;
+    }
+
+    /* ── THREE LAYERS ── */
+    #audit-types { padding: 96px 0; background: var(--bg); }
+    .layers-header { text-align: center; margin-bottom: 56px; }
+    .layers-header .section-label { margin-bottom: 16px; }
+    .layers-header .section-subtitle { margin: 14px auto 0; }
+    .layers-grid { display: grid; grid-template-columns: repeat(3,1fr); gap: 16px; }
+    .layer-card { border-radius: var(--radius-xl); padding: 32px 26px; border: 1px solid var(--border); }
+    .layer-seo { background: var(--surface); }
+    .layer-geo { background: var(--surface-2); border-color: rgba(217,119,87,0.14); }
+    .layer-aeo { background: var(--orange); border-color: rgba(255,255,255,0.15); }
+    .layer-eyebrow { font-size: 10px; font-weight: 800; letter-spacing: 0.14em; text-transform: uppercase; margin-bottom: 6px; }
+    .layer-seo .layer-eyebrow { color: var(--orange); }
+    .layer-geo .layer-eyebrow { color: var(--orange); }
+    .layer-aeo .layer-eyebrow { color: rgba(255,255,255,0.65); }
+    .layer-name { font-size: 32px; font-weight: 900; letter-spacing: -0.03em; margin-bottom: 4px; }
+    .layer-seo .layer-name, .layer-geo .layer-name { color: var(--text); }
+    .layer-aeo .layer-name { color: var(--white); }
+    .layer-full { font-size: 12px; font-weight: 600; margin-bottom: 22px; padding-bottom: 22px; border-bottom: 1px solid var(--border); }
+    .layer-seo .layer-full { color: var(--text-2); }
+    .layer-geo .layer-full { color: var(--text-2); }
+    .layer-aeo .layer-full { color: rgba(255,255,255,0.65); border-color: rgba(255,255,255,0.18); }
+    .layer-rows { display: flex; flex-direction: column; gap: 14px; }
+    .layer-row-label { font-size: 10px; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; margin-bottom: 2px; }
+    .layer-seo .layer-row-label, .layer-geo .layer-row-label { color: var(--text-3); }
+    .layer-aeo .layer-row-label { color: rgba(255,255,255,0.55); }
+    .layer-row-val { font-size: 15px; font-weight: 600; line-height: 1.5; }
+    .layer-seo .layer-row-val, .layer-geo .layer-row-val { color: var(--text); }
+    .layer-aeo .layer-row-val { color: var(--white); }
+
+    /* ── DEMO ── */
+    #demo { padding: 80px 0; background: var(--surface); }
+    .demo-inner { display: grid; grid-template-columns: 1fr 1fr; gap: 60px; align-items: center; }
+    .demo-label { margin-bottom: 14px; }
+    .demo-title { font-size: clamp(24px, 3.5vw, 36px); font-weight: 800; letter-spacing: -0.025em; margin-bottom: 14px; color: var(--text); }
+    .demo-desc { font-size: 17px; color: var(--white); line-height: 1.7; margin-bottom: 28px; }
+    .demo-actions { display: flex; gap: 12px; flex-wrap: wrap; }
+    .demo-visual { background: var(--bg); border: 1px solid var(--border); border-radius: var(--radius-xl); overflow: hidden; }
+    .demo-terminal-bar { background: var(--surface-2); padding: 11px 16px; display: flex; align-items: center; gap: 7px; border-bottom: 1px solid var(--border); }
+    .demo-dot { width: 10px; height: 10px; border-radius: 50%; }
+    .demo-dot-r { background: #ff5f57; } .demo-dot-y { background: #febc2e; } .demo-dot-g { background: #28c840; }
+    .demo-terminal-title { font-size: 11px; font-weight: 600; color: var(--text-3); margin-left: auto; }
+    .demo-chat { padding: 20px; display: flex; flex-direction: column; gap: 14px; }
+    .demo-msg { border-radius: var(--radius-md); padding: 12px 15px; font-size: 12px; line-height: 1.65; max-width: 90%; }
+    .demo-msg-user { background: var(--orange); color: var(--white); font-weight: 600; align-self: flex-end; border-radius: var(--radius-md) var(--radius-md) 4px var(--radius-md); }
+    .demo-msg-claude { background: var(--surface-2); color: var(--white); align-self: flex-start; border: 1px solid var(--border); border-radius: var(--radius-md) var(--radius-md) var(--radius-md) 4px; }
+    .demo-msg-claude strong { color: var(--orange); }
+    .demo-score-row { display: flex; gap: 8px; align-self: flex-start; flex-wrap: wrap; }
+    .demo-score-chip {
+      background: var(--surface-2); border: 1px solid var(--border); border-radius: var(--radius-sm);
+      padding: 8px 14px; font-size: 13px; font-weight: 800; color: var(--text);
+      display: flex; flex-direction: column; align-items: center; gap: 2px;
+    }
+    .demo-score-chip span:first-child { font-size: 9px; font-weight: 700; color: var(--text-3); letter-spacing: 0.1em; text-transform: uppercase; }
+    .demo-score-chip.highlight { background: rgba(217,119,87,0.15); border-color: rgba(217,119,87,0.3); }
+    .demo-score-chip.highlight span:last-child { color: var(--orange); }
+
+    /* ── FAQ ── */
+    #faq { padding: 96px 0; background: var(--bg); }
+    .faq-header { text-align: center; margin-bottom: 48px; }
+    .faq-header .section-label { margin-bottom: 16px; }
+    .faq-list { max-width: 740px; margin: 0 auto; display: flex; flex-direction: column; gap: 10px; }
+    .faq-item { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius-md); overflow: hidden; transition: box-shadow 0.2s; }
+    .faq-item.open { box-shadow: var(--shadow-md); border-color: rgba(217,119,87,0.2); }
+    .faq-q { display: flex; align-items: center; justify-content: space-between; gap: 16px; padding: 18px 22px; cursor: pointer; user-select: none; font-size: 14px; font-weight: 700; color: var(--text); }
+    .faq-q:hover { background: var(--surface-2); }
+    .faq-icon { width: 26px; height: 26px; background: var(--surface-3); border-radius: 50%; display: flex; align-items: center; justify-content: center; flex-shrink: 0; transition: background 0.2s, transform 0.3s; }
+    .faq-item.open .faq-icon { background: var(--orange); transform: rotate(45deg); }
+    .faq-a { max-height: 0; overflow: hidden; transition: max-height 0.36s cubic-bezier(0.4,0,0.2,1); }
+    .faq-a-inner { padding: 16px 22px 18px; font-size: 15px; color: var(--white); line-height: 1.75; border-top: 1px solid var(--border); }
+    .faq-item.open .faq-a { max-height: 260px; }
+
+    /* ── CTA ── */
+    #cta-section { padding: 100px 0; background: var(--surface); text-align: center; position: relative; overflow: hidden; }
+    .cta-glow { position: absolute; top: 50%; left: 50%; transform: translate(-50%,-50%); width: 700px; height: 400px; background: radial-gradient(ellipse at center, rgba(217,119,87,0.12) 0%, transparent 70%); pointer-events: none; }
+    .cta-inner { position: relative; z-index: 1; }
+    .cta-eyebrow { display: inline-flex; align-items: center; gap: 7px; font-size: 11px; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; color: var(--orange); background: var(--orange-pale); border: 1px solid rgba(217,119,87,0.2); padding: 6px 14px; border-radius: var(--radius-full); margin-bottom: 22px; }
+    .cta-title { font-size: clamp(30px, 5vw, 52px); font-weight: 900; color: var(--text); letter-spacing: -0.03em; margin-bottom: 14px; line-height: 1.1; }
+    .cta-title em { color: var(--orange); font-style: italic; }
+    .cta-desc { font-size: 18px; color: var(--white); margin-bottom: 36px; max-width: 460px; margin-left: auto; margin-right: auto; }
+    .cta-btns { display: flex; align-items: center; justify-content: center; gap: 12px; flex-wrap: wrap; margin-bottom: 28px; }
+    .btn-surface { background: var(--surface-3); color: var(--text); border: 1px solid var(--border); }
+    .btn-surface:hover { border-color: var(--orange); color: var(--orange); transform: translateY(-1px); }
+    .btn-linkedin {
+      background: #0072b1; color: #fff;
+      box-shadow: 0 6px 24px rgba(0,114,177,0.28);
+    }
+    .btn-linkedin:hover {
+      background: #005f96; transform: translateY(-1px);
+      box-shadow: 0 10px 32px rgba(0,114,177,0.38);
+    }
+    .cta-note { font-size: 12px; color: var(--text-3); }
+
+    /* ── FOOTER ── */
+    footer { background: var(--bg-2); border-top: 1px solid var(--border); padding: 48px 0 28px; }
+    .footer-inner { display: flex; align-items: flex-start; justify-content: space-between; gap: 40px; flex-wrap: wrap; margin-bottom: 36px; }
+    .footer-brand { max-width: 240px; }
+    .footer-logo { display: flex; align-items: center; gap: 9px; margin-bottom: 12px; text-decoration: none; }
+    .footer-logo-icon { width: 30px; height: 30px; background: var(--orange); border-radius: 8px; display: flex; align-items: center; justify-content: center; }
+    .footer-logo-text { font-size: 13px; font-weight: 800; color: var(--text); }
+    .footer-tagline { font-size: 14px; color: var(--white); line-height: 1.65; }
+    .footer-links-title { font-size: 11px; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; color: var(--text-3); margin-bottom: 14px; }
+    .footer-links { list-style: none; display: flex; flex-direction: column; gap: 10px; }
+    .footer-links a { font-size: 13px; font-weight: 500; color: var(--text-2); text-decoration: none; transition: color 0.2s; }
+    .footer-links a:hover { color: var(--orange); }
+    .footer-bottom { border-top: 1px solid var(--border); padding-top: 24px; display: flex; align-items: center; justify-content: space-between; gap: 16px; flex-wrap: wrap; }
+    .footer-copy { font-size: 12px; color: var(--text-3); }
+    .footer-copy a { color: var(--text-2); text-decoration: none; transition: color 0.2s; }
+    .footer-copy a:hover { color: var(--orange); }
+    .footer-socials { display: flex; gap: 8px; }
+    .footer-social-btn { width: 32px; height: 32px; border-radius: var(--radius-sm); background: var(--surface-2); border: 1px solid var(--border); display: flex; align-items: center; justify-content: center; text-decoration: none; transition: all 0.2s; }
+    .footer-social-btn:hover { background: var(--orange); border-color: var(--orange); }
+    .footer-social-btn svg { color: var(--text-3); transition: color 0.2s; }
+    .footer-social-btn:hover svg { color: var(--white); }
+
+    /* ── BLOG ── */
+    #blog { padding: 96px 0; background: var(--surface); }
+    .blog-header { text-align: center; margin-bottom: 56px; }
+    .blog-header .section-label { margin-bottom: 16px; }
+    .blog-header .section-subtitle { margin: 14px auto 0; }
+
+    .blog-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 20px;
+    }
+    /* First post spans full width as a featured card */
+    .blog-card-featured {
+      grid-column: 1 / -1;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 0;
+      background: var(--bg);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-xl);
+      overflow: hidden;
+    }
+    .blog-card-featured .blog-card-visual {
+      min-height: 280px;
+      background: linear-gradient(135deg, #1a0e06 0%, #2d1708 50%, #1a0e06 100%);
+      display: flex; align-items: center; justify-content: center;
+      position: relative; overflow: hidden; padding: 32px;
+    }
+    .blog-card-featured .blog-card-visual::before {
+      content: ''; position: absolute; inset: 0;
+      background: radial-gradient(circle at 60% 40%, rgba(217,119,87,0.25) 0%, transparent 65%);
+    }
+    .blog-visual-icon {
+      width: 80px; height: 80px; background: var(--orange);
+      border-radius: var(--radius-lg); display: flex; align-items: center; justify-content: center;
+      position: relative; z-index: 1;
+      box-shadow: 0 0 60px rgba(217,119,87,0.35);
+    }
+    .blog-card-featured .blog-card-body {
+      padding: 36px; display: flex; flex-direction: column; justify-content: center;
+    }
+    .blog-tag {
+      display: inline-flex; align-items: center; gap: 6px;
+      font-size: 10px; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase;
+      color: var(--orange); background: var(--orange-pale);
+      border: 1px solid rgba(217,119,87,0.2);
+      padding: 5px 11px; border-radius: var(--radius-full); margin-bottom: 14px;
+      width: fit-content;
+    }
+    .blog-card-title {
+      font-size: 22px; font-weight: 800; color: var(--text);
+      letter-spacing: -0.02em; line-height: 1.25; margin-bottom: 12px;
+    }
+    .blog-card-excerpt {
+      font-size: 15px; color: var(--white); line-height: 1.7; margin-bottom: 20px;
+    }
+    .blog-card-meta {
+      display: flex; align-items: center; gap: 14px;
+      font-size: 12px; font-weight: 600; color: var(--text-3);
+    }
+    .blog-card-meta-item { display: flex; align-items: center; gap: 5px; }
+    .blog-card-meta-item svg { color: var(--orange); }
+    .blog-read-link {
+      display: inline-flex; align-items: center; gap: 7px;
+      font-size: 13px; font-weight: 700; color: var(--orange);
+      text-decoration: none; margin-top: 18px;
+      transition: gap 0.2s;
+    }
+    .blog-read-link:hover { gap: 10px; }
+
+    /* Regular cards */
+    .blog-card {
+      background: var(--bg); border: 1px solid var(--border);
+      border-radius: var(--radius-lg); overflow: hidden;
+      transition: all 0.25s ease; display: flex; flex-direction: column;
+    }
+    .blog-card:hover { transform: translateY(-3px); box-shadow: var(--shadow-lg); border-color: rgba(217,119,87,0.18); }
+    .blog-card .blog-card-visual {
+      height: 160px;
+      display: flex; align-items: center; justify-content: center;
+      position: relative; overflow: hidden;
+    }
+    .blog-card .blog-visual-icon {
+      width: 52px; height: 52px; border-radius: var(--radius-md);
+    }
+    .blog-card .blog-card-body { padding: 22px; display: flex; flex-direction: column; flex: 1; }
+    .blog-card .blog-card-title { font-size: 16px; margin-bottom: 10px; }
+    .blog-card .blog-card-excerpt { font-size: 14px; flex: 1; margin-bottom: 16px; }
+
+    /* Visual gradient variants */
+    .visual-1 { background: linear-gradient(135deg, #0d1a0d 0%, #152815 50%, #0d1a0d 100%); }
+    .visual-1::before { content: ''; position: absolute; inset: 0; background: radial-gradient(circle at 50% 50%, rgba(34,197,94,0.18) 0%, transparent 65%); }
+    .visual-1 .blog-visual-icon { background: #16a34a; box-shadow: 0 0 40px rgba(34,197,94,0.3); }
+    .visual-2 { background: linear-gradient(135deg, #0d0d1a 0%, #131328 50%, #0d0d1a 100%); }
+    .visual-2::before { content: ''; position: absolute; inset: 0; background: radial-gradient(circle at 50% 50%, rgba(99,102,241,0.18) 0%, transparent 65%); }
+    .visual-2 .blog-visual-icon { background: #6366f1; box-shadow: 0 0 40px rgba(99,102,241,0.3); }
+    .visual-3 { background: linear-gradient(135deg, #1a0a0a 0%, #281515 50%, #1a0a0a 100%); }
+    .visual-3::before { content: ''; position: absolute; inset: 0; background: radial-gradient(circle at 50% 50%, rgba(239,68,68,0.18) 0%, transparent 65%); }
+    .visual-3 .blog-visual-icon { background: #dc2626; box-shadow: 0 0 40px rgba(239,68,68,0.3); }
+    .visual-4 { background: linear-gradient(135deg, #0d1620 0%, #122030 50%, #0d1620 100%); }
+    .visual-4::before { content: ''; position: absolute; inset: 0; background: radial-gradient(circle at 50% 50%, rgba(14,165,233,0.18) 0%, transparent 65%); }
+    .visual-4 .blog-visual-icon { background: #0284c7; box-shadow: 0 0 40px rgba(14,165,233,0.3); }
+    .visual-5 { background: linear-gradient(135deg, #1a1500 0%, #2a2000 50%, #1a1500 100%); }
+    .visual-5::before { content: ''; position: absolute; inset: 0; background: radial-gradient(circle at 50% 50%, rgba(234,179,8,0.18) 0%, transparent 65%); }
+    .visual-5 .blog-visual-icon { background: #ca8a04; box-shadow: 0 0 40px rgba(234,179,8,0.3); }
+
+    /* Alex Labat credit */
+    .labat-credit {
+      background: var(--surface-2); border: 1px solid var(--border);
+      border-radius: var(--radius-md); padding: 16px 22px;
+      display: flex; align-items: center; gap: 14px;
+      max-width: 680px; margin: 48px auto 0;
+    }
+    .labat-credit-icon {
+      width: 40px; height: 40px; border-radius: 50%; background: var(--orange-pale);
+      border: 1px solid rgba(217,119,87,0.2);
+      display: flex; align-items: center; justify-content: center; flex-shrink: 0;
+    }
+    .labat-credit-text { font-size: 13px; color: var(--text-2); line-height: 1.55; }
+    .labat-credit-text strong { color: var(--text); font-weight: 700; }
+    .labat-credit-text a { color: var(--orange); text-decoration: none; font-weight: 600; }
+    .labat-credit-text a:hover { text-decoration: underline; }
+
+    /* ── RESPONSIVE ── */
+    @media (max-width: 1024px) {
+      .features-grid { grid-template-columns: repeat(2,1fr); }
+      .layers-grid { grid-template-columns: 1fr; }
+      .blog-grid { grid-template-columns: repeat(2,1fr); }
+      .blog-card-featured { grid-template-columns: 1fr; }
+      .blog-card-featured .blog-card-visual { min-height: 200px; }
+    }
+    @media (max-width: 860px) {
+      .nav-links, .nav-cta .btn-secondary { display: none; }
+      .nav-hamburger { display: flex; }
+      .hero-inner { grid-template-columns: 1fr; gap: 44px; }
+      .hero-visual { order: -1; }
+      .hero-float-1 { display: none; }
+      .hero-float-2 { right: 0; }
+      .demo-inner { grid-template-columns: 1fr; }
+    }
+    @media (max-width: 640px) {
+      #hero { padding: 116px 0 68px; }
+      .features-grid { grid-template-columns: 1fr; }
+      .blog-grid { grid-template-columns: 1fr; }
+      .labat-credit { flex-direction: column; text-align: center; }
+      .hero-actions { flex-direction: column; align-items: flex-start; }
+      .hero-actions .btn { width: 100%; justify-content: center; }
+      .hiw-step { grid-template-columns: 52px 1fr; gap: 14px; }
+      .footer-inner { flex-direction: column; }
+      .cta-btns { flex-direction: column; align-items: center; }
+      .cta-btns .btn { width: 100%; max-width: 300px; justify-content: center; }
+    }
+
+    /* ── ANIMATIONS ── */
+    .fade-up { opacity: 0; transform: translateY(22px); transition: opacity 0.6s ease, transform 0.6s ease; }
+    .fade-up.visible { opacity: 1; transform: translateY(0); }
+    .fade-up-delay-1 { transition-delay: 0.08s; }
+    .fade-up-delay-2 { transition-delay: 0.16s; }
+    .fade-up-delay-3 { transition-delay: 0.24s; }
+    .fade-up-delay-4 { transition-delay: 0.32s; }
+    .reveal { opacity: 0; transform: translateY(28px); transition: opacity 0.65s ease, transform 0.65s ease; }
+    .reveal.revealed { opacity: 1; transform: translateY(0); }
+  </style>
+</head>
+<body>
+
+<!-- ═══ NAVBAR ═══ -->
+<nav id="navbar">
+  <div class="container">
+    <div class="nav-inner">
+      <a href="#" class="nav-logo">
+        <div class="nav-logo-icon">
+          <svg width="18" height="18" fill="none" stroke="#fff" stroke-width="2.2" viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
+        </div>
+        <div class="nav-logo-text">Claude <span>SEO Skill</span></div>
+      </a>
+      <ul class="nav-links">
+        <li><a href="#features">Features</a></li>
+        <li><a href="#how-it-works">How It Works</a></li>
+        <li><a href="#audit-types">Audit Types</a></li>
+        <li><a href="#demo">Demo</a></li>
+        <li><a href="#faq">FAQ</a></li>
+        <li><a href="#blog">Blog</a></li>
+      </ul>
+      <div class="nav-cta">
+        <a href="https://github.com/nthabelengaedenmanell/SEO-GEO-AEO-Audit-Skill-for-Claude/tree/main" target="_blank" class="btn btn-secondary" style="padding:9px 16px;font-size:13px;">
+          <svg width="15" height="15" fill="currentColor" viewBox="0 0 24 24"><path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0 0 24 12c0-6.63-5.37-12-12-12z"/></svg>
+          GitHub
+        </a>
+      </div>
+      <button class="nav-hamburger" id="hamburger" aria-label="Toggle menu">
+        <span></span><span></span><span></span>
+      </button>
+    </div>
+  </div>
+  <div class="mobile-menu" id="mobile-menu">
+    <ul>
+      <li><a href="#features">Features</a></li>
+      <li><a href="#how-it-works">How It Works</a></li>
+      <li><a href="#audit-types">Audit Types</a></li>
+      <li><a href="#demo">Demo</a></li>
+      <li><a href="#faq">FAQ</a></li>
+      <li><a href="#blog">Blog</a></li>
+    </ul>
+    <a href="#cta-section" class="btn btn-primary btn-lg">Download the Skill</a>
+  </div>
+</nav>
+
+<!-- ═══ HERO ═══ -->
+<section id="hero">
+  <div class="hero-noise"></div>
+  <div class="hero-glow-1"></div>
+  <div class="hero-glow-2"></div>
+  <div class="container">
+    <div class="hero-inner">
+      <div>
+        <div class="hero-eyebrow fade-up">
+          <div class="hero-eyebrow-dot">
+            <svg width="10" height="10" fill="none" stroke="#fff" stroke-width="2.5" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>
+          </div>
+          Free & open source · DOCX + PDF report · Built by Nthabeleng Aeden Manell
+        </div>
+        <h1 class="hero-title fade-up fade-up-delay-1">
+          SEO, GEO & AEO<br/>Audits Powered<br/>by <em>Claude AI</em>
+        </h1>
+        <p class="hero-desc fade-up fade-up-delay-2">
+          Provide a URL and Claude crawls your entire site — homepage, About, Services, Blog, and more — then scores your SEO, GEO, and AEO across every dimension and delivers a professional downloadable report.
+        </p>
+        <div class="hero-actions fade-up fade-up-delay-3">
+          <a href="#cta-section" class="btn btn-primary btn-lg">
+            <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path d="M12 15V3m0 12-4-4m4 4 4-4M3 21h18"/></svg>
+            Download the Skill
+          </a>
+          <a href="https://www.linkedin.com/in/aeden-manell/" target="_blank" class="btn btn-linkedin btn-lg">
+            <svg width="16" height="16" fill="#fff" viewBox="0 0 24 24"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 0 1-2.063-2.065 2.064 2.064 0 1 1 2.063 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg>
+            Connect with me
+          </a>
+        </div>
+        <div class="hero-trust fade-up fade-up-delay-4">
+          <div class="hero-trust-item">
+            <svg width="12" height="12" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>
+            Quick & Full Audit Modes
+          </div>
+          <div class="hero-trust-sep"></div>
+          <div class="hero-trust-item">
+            <svg width="12" height="12" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>
+            Whole-Site Multi-Page Crawl
+          </div>
+          <div class="hero-trust-sep"></div>
+          <div class="hero-trust-item">
+            <svg width="12" height="12" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>
+            Scored 1–10 Each Layer
+          </div>
+        </div>
+      </div>
+      <!-- CARD -->
+      <div class="hero-visual fade-up fade-up-delay-3">
+        <div class="hero-float hero-float-1">
+          <div class="hero-float-dot dot-green"></div>
+          Crawl complete — 12 pages analyzed
+        </div>
+        <div class="hero-card">
+          <div class="hero-card-header">
+            <div class="hero-card-icon">
+              <svg width="20" height="20" fill="none" stroke="#fff" stroke-width="2.2" viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
+            </div>
+            <div>
+              <div class="hero-card-title">Site Audit Report</div>
+              <div class="hero-card-sub">yourwebsite.com · Full Audit</div>
+            </div>
+          </div>
+          <div class="hero-url-bar">
+            <svg width="12" height="12" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg>
+            <span>https://</span>yourwebsite.com
+          </div>
+          <div class="score-grid">
+            <div class="score-box">
+              <div class="score-label">SEO</div>
+              <div class="score-val">8<span class="score-denom">/10</span></div>
+            </div>
+            <div class="score-box active">
+              <div class="score-label">GEO</div>
+              <div class="score-val">7<span class="score-denom">/10</span></div>
+            </div>
+            <div class="score-box">
+              <div class="score-label">AEO</div>
+              <div class="score-val">6<span class="score-denom">/10</span></div>
+            </div>
+          </div>
+          <div class="hero-bar">
+            <div class="hero-bar-item">
+              <div class="hero-bar-label">Title Tags</div>
+              <div class="hero-bar-track"><div class="hero-bar-fill" style="width:88%"></div></div>
+              <div class="hero-bar-pct">88%</div>
+            </div>
+            <div class="hero-bar-item">
+              <div class="hero-bar-label">Schema</div>
+              <div class="hero-bar-track"><div class="hero-bar-fill" style="width:62%"></div></div>
+              <div class="hero-bar-pct">62%</div>
+            </div>
+            <div class="hero-bar-item">
+              <div class="hero-bar-label">E-E-A-T</div>
+              <div class="hero-bar-track"><div class="hero-bar-fill" style="width:74%"></div></div>
+              <div class="hero-bar-pct">74%</div>
+            </div>
+            <div class="hero-bar-item">
+              <div class="hero-bar-label">FAQ Struct.</div>
+              <div class="hero-bar-track"><div class="hero-bar-fill" style="width:45%"></div></div>
+              <div class="hero-bar-pct">45%</div>
+            </div>
+          </div>
+        </div>
+        <div class="hero-float hero-float-2">
+          <div class="hero-float-dot dot-orange"></div>
+          DOCX + PDF report ready
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ TRUST BAND ═══ -->
+<div class="trust-band">
+  <div class="container">
+    <p class="trust-band-label">Works inside Claude · Optimizes for every modern search engine</p>
+    <div class="trust-band-logos">
+      <div class="trust-logo">
+        <svg width="15" height="15" fill="none" viewBox="0 0 24 24"><path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z" fill="#4285F4"/><path d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z" fill="#34A853"/><path d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z" fill="#FBBC05"/><path d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z" fill="#EA4335"/></svg>
+        Google Search
+      </div>
+      <div class="trust-logo">
+        <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M12 2a7 7 0 0 1 7 7c0 5-7 13-7 13S5 14 5 9a7 7 0 0 1 7-7z"/><circle cx="12" cy="9" r="2.5" fill="currentColor" stroke="none"/></svg>
+        Claude AI
+      </div>
+      <div class="trust-logo">
+        <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M12 8v4l3 3"/></svg>
+        ChatGPT Search
+      </div>
+      <div class="trust-logo">
+        <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>
+        Perplexity
+      </div>
+      <div class="trust-logo">
+        <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2z"/><path d="M12 6v6l4 2"/></svg>
+        Gemini
+      </div>
+      <div class="trust-logo">
+        <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z"/><path d="M19 10v2a7 7 0 0 1-14 0v-2"/><line x1="12" y1="19" x2="12" y2="23"/><line x1="8" y1="23" x2="16" y2="23"/></svg>
+        Voice Search
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══ FEATURES ═══ -->
+<section id="features">
+  <div class="container">
+    <div class="features-header">
+      <div class="section-label">
+        <svg width="12" height="12" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+        Everything It Covers
+      </div>
+      <h2 class="section-title" style="margin-top:16px">What It Does</h2>
+      <p class="section-subtitle" style="margin-top:14px">Modern search has three layers. The Claude SEO Skill covers all of them — plus structured data, content quality, and a beautiful downloadable report.</p>
+    </div>
+    <div class="features-grid">
+
+      <!-- SEO -->
+      <div class="feature-card reveal">
+        <div class="feature-card-icon icon-bg-orange">
+          <svg width="22" height="22" fill="none" stroke="var(--orange)" stroke-width="2" viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/><path d="M11 8v6M8 11h6" stroke-width="2.2"/></svg>
+        </div>
+        <div class="feature-card-title">SEO Audit</div>
+        <p class="feature-card-desc">Deep technical and on-page analysis covering title tags, meta descriptions, heading hierarchy, canonicalization, internal linking, Core Web Vitals signals, and crawlability.</p>
+        <ul class="feature-list">
+          <li><svg width="11" height="11" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>Title & meta optimization</li>
+          <li><svg width="11" height="11" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>Heading structure analysis</li>
+          <li><svg width="11" height="11" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>Internal link audit</li>
+          <li><svg width="11" height="11" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>Canonicalization check</li>
+          <li><svg width="11" height="11" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>Image alt text review</li>
+          <li><svg width="11" height="11" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>Page speed signals</li>
+        </ul>
+      </div>
+
+      <!-- GEO -->
+      <div class="feature-card reveal">
+        <div class="feature-card-icon icon-bg-purple">
+          <svg width="22" height="22" fill="none" stroke="#8b5cf6" stroke-width="2" viewBox="0 0 24 24"><path d="M12 2a10 10 0 1 0 10 10"/><path d="M12 2v10l6-6"/><circle cx="19" cy="5" r="3" fill="#8b5cf6" stroke="none" opacity=".3"/><circle cx="19" cy="5" r="1.5" fill="#8b5cf6" stroke="none"/></svg>
+        </div>
+        <div class="feature-card-title">GEO Audit</div>
+        <p class="feature-card-desc">Generative Engine Optimization — how likely is your content to be cited, quoted, or recommended by AI systems like Claude, ChatGPT, and Perplexity?</p>
+        <ul class="feature-list">
+          <li><svg width="11" height="11" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>Source credibility signals</li>
+          <li><svg width="11" height="11" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>Citation-worthy formatting</li>
+          <li><svg width="11" height="11" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>E-E-A-T assessment</li>
+          <li><svg width="11" height="11" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>Entity clarity check</li>
+          <li><svg width="11" height="11" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>AI-snippet readiness</li>
+          <li><svg width="11" height="11" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>Content authority signals</li>
+        </ul>
+      </div>
+
+      <!-- AEO -->
+      <div class="feature-card reveal">
+        <div class="feature-card-icon icon-bg-green">
+          <svg width="22" height="22" fill="none" stroke="#22c55e" stroke-width="2" viewBox="0 0 24 24"><path d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z"/><path d="M19 10v2a7 7 0 0 1-14 0v-2"/><line x1="12" y1="19" x2="12" y2="23"/><line x1="8" y1="23" x2="16" y2="23"/></svg>
+        </div>
+        <div class="feature-card-title">AEO Audit</div>
+        <p class="feature-card-desc">Answer Engine Optimization — is your content structured to appear in featured snippets, voice search results, and AI-generated direct answers?</p>
+        <ul class="feature-list">
+          <li><svg width="11" height="11" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>Question-answer structure</li>
+          <li><svg width="11" height="11" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>Featured snippet suitability</li>
+          <li><svg width="11" height="11" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>FAQ & HowTo schema</li>
+          <li><svg width="11" height="11" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>Conversational query match</li>
+          <li><svg width="11" height="11" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>Voice search optimization</li>
+          <li><svg width="11" height="11" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>Concise answer density</li>
+        </ul>
+      </div>
+
+      <!-- Schema -->
+      <div class="feature-card reveal">
+        <div class="feature-card-icon icon-bg-yellow">
+          <svg width="22" height="22" fill="none" stroke="#eab308" stroke-width="2" viewBox="0 0 24 24"><polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/><line x1="19" y1="12" x2="5" y2="12" stroke-width="0" opacity="0"/><path d="M14 4 10 20"/></svg>
+        </div>
+        <div class="feature-card-title">Structured Data Review</div>
+        <p class="feature-card-desc">Validates existing schema markup and recommends missing JSON-LD schemas that unlock rich results — articles, products, events, FAQs, breadcrumbs, and more.</p>
+        <ul class="feature-list">
+          <li><svg width="11" height="11" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>JSON-LD validation</li>
+          <li><svg width="11" height="11" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>Rich result eligibility</li>
+          <li><svg width="11" height="11" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>Missing schema detection</li>
+          <li><svg width="11" height="11" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>Schema.org alignment</li>
+        </ul>
+      </div>
+
+      <!-- Content -->
+      <div class="feature-card reveal">
+        <div class="feature-card-icon icon-bg-red">
+          <svg width="22" height="22" fill="none" stroke="#ef4444" stroke-width="2" viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><polyline points="10 9 9 9 8 9"/></svg>
+        </div>
+        <div class="feature-card-title">Content Quality Analysis</div>
+        <p class="feature-card-desc">Evaluates readability, topical depth, keyword use, content gaps, and semantic coverage to ensure your pages fully satisfy search intent.</p>
+        <ul class="feature-list">
+          <li><svg width="11" height="11" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>Readability scoring</li>
+          <li><svg width="11" height="11" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>Topical coverage gaps</li>
+          <li><svg width="11" height="11" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>Keyword density review</li>
+          <li><svg width="11" height="11" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>Search intent alignment</li>
+        </ul>
+      </div>
+
+      <!-- Report -->
+      <div class="feature-card card-report reveal">
+        <div class="feature-card-icon icon-bg-blue">
+          <svg width="22" height="22" fill="none" stroke="#38bdf8" stroke-width="2" viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+        </div>
+        <div class="feature-card-title">Downloadable DOCX + PDF Report</div>
+        <p class="feature-card-desc">Every audit auto-generates a premium agency-quality report — a polished Word document and PDF you can share with clients or your team.</p>
+        <ul class="feature-list">
+          <li><svg width="11" height="11" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>Navy cover with score cards</li>
+          <li><svg width="11" height="11" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>Signal-by-signal findings table</li>
+          <li><svg width="11" height="11" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>Priority matrix (Critical → Quick Win)</li>
+          <li><svg width="11" height="11" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>Executive summary included</li>
+          <li><svg width="11" height="11" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>"What's Working Well" section</li>
+        </ul>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- ═══ HOW IT WORKS ═══ -->
+<section id="how-it-works">
+  <div class="container">
+    <div class="hiw-header reveal">
+      <div class="section-label">
+        <svg width="12" height="12" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+        The Process
+      </div>
+      <h2 class="section-title">From URL to polished report<br/><em style="font-style:italic;color:var(--orange)">in minutes</em></h2>
+      <p class="section-subtitle">Five simple steps. No setup headaches. No dashboards to learn. Just paste your URL.</p>
+    </div>
+    <div class="hiw-steps">
+      <div class="hiw-step reveal">
+        <div class="hiw-step-left"><div class="hiw-step-num">1</div><div class="hiw-step-line"></div></div>
+        <div class="hiw-step-body">
+          <div class="hiw-step-title">Download & Install the Skill</div>
+          <p class="hiw-step-desc">Grab the skill ZIP from GitHub and add it to Claude. Once installed, invoke it in any Claude conversation — the skill activates and asks one question first, every time, no exceptions.</p>
+          <div class="hiw-step-tag">
+            <svg width="10" height="10" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24" style="display:inline;vertical-align:middle;margin-right:4px"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+            From GitHub
+          </div>
+        </div>
+      </div>
+      <div class="hiw-step reveal">
+        <div class="hiw-step-left"><div class="hiw-step-num">2</div><div class="hiw-step-line"></div></div>
+        <div class="hiw-step-body">
+          <div class="hiw-step-title">Choose: Quick or Full Audit</div>
+          <p class="hiw-step-desc">Quick Audit (1–2 min) covers top priority issues and scores across up to 7 high-signal pages. Full Audit (5–10 min) crawls every meaningful page — no arbitrary cap — for the most comprehensive picture.</p>
+          <div class="hiw-step-tag">
+            <svg width="10" height="10" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24" style="display:inline;vertical-align:middle;margin-right:4px"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>
+            Quick · Full
+          </div>
+        </div>
+      </div>
+      <div class="hiw-step reveal">
+        <div class="hiw-step-left"><div class="hiw-step-num">3</div><div class="hiw-step-line"></div></div>
+        <div class="hiw-step-body">
+          <div class="hiw-step-title">Paste Your URL — Claude Crawls the Whole Site</div>
+          <p class="hiw-step-desc">Claude fetches your homepage, robots.txt, and sitemap.xml in parallel, builds a complete site map, then crawls your About, Services, Blog, Case Studies, Contact, and FAQ pages before drawing any conclusions.</p>
+          <div class="hiw-step-tag">
+            <svg width="10" height="10" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24" style="display:inline;vertical-align:middle;margin-right:4px"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg>
+            Full site crawl
+          </div>
+        </div>
+      </div>
+      <div class="hiw-step reveal">
+        <div class="hiw-step-left"><div class="hiw-step-num">4</div><div class="hiw-step-line"></div></div>
+        <div class="hiw-step-body">
+          <div class="hiw-step-title">Receive Your Chat Recap</div>
+          <p class="hiw-step-desc">Claude returns a concise score table (SEO / GEO / AEO, each rated 1–10), your top 3 priorities named specifically, and your biggest strength — all in the chat, readable in under a minute.</p>
+          <div class="hiw-step-tag">
+            <svg width="10" height="10" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24" style="display:inline;vertical-align:middle;margin-right:4px"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg>
+            Score table in chat
+          </div>
+        </div>
+      </div>
+      <div class="hiw-step reveal">
+        <div class="hiw-step-left"><div class="hiw-step-num">5</div><div class="hiw-step-line"></div></div>
+        <div class="hiw-step-body">
+          <div class="hiw-step-title">Download Your DOCX + PDF Report</div>
+          <p class="hiw-step-desc">Immediately after the chat recap, Claude generates a full agency-quality report: cover page, executive summary, signal-by-signal findings, priority matrix, and a "What's Working Well" section — auto-delivered as both a Word document and PDF.</p>
+          <div class="hiw-step-tag">
+            <svg width="10" height="10" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24" style="display:inline;vertical-align:middle;margin-right:4px"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+            Word & PDF auto-generated
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ THREE LAYERS ═══ -->
+<section id="audit-types">
+  <div class="container">
+    <div class="layers-header reveal">
+      <div class="section-label">
+        <svg width="12" height="12" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><polygon points="12 2 2 7 12 12 22 7 12 2"/><polyline points="2 17 12 22 22 17"/><polyline points="2 12 12 17 22 12"/></svg>
+        The Three Layers of Modern Search
+      </div>
+      <h2 class="section-title" style="margin-top:16px">SEO vs GEO vs AEO —<br/><em style="font-style:italic;color:var(--orange)">What's the difference?</em></h2>
+      <p class="section-subtitle">Search has evolved beyond the blue link. To win today, you need to optimize for all three layers.</p>
+    </div>
+    <div class="layers-grid">
+      <div class="layer-card layer-seo reveal">
+        <div class="layer-eyebrow">Layer 1</div>
+        <div class="layer-name">SEO</div>
+        <div class="layer-full">Search Engine Optimization</div>
+        <div class="layer-rows">
+          <div><div class="layer-row-label">Goal</div><div class="layer-row-val">Rank on the first page of Google & Bing.</div></div>
+          <div><div class="layer-row-label">Optimizing for</div><div class="layer-row-val">Crawlers, algorithms, and ranking signals.</div></div>
+          <div><div class="layer-row-label">Key signals</div><div class="layer-row-val">Technical health, backlinks, page speed, content relevance, E-E-A-T.</div></div>
+          <div><div class="layer-row-label">Outcome</div><div class="layer-row-val">Your page appears when users search relevant keywords.</div></div>
+        </div>
+      </div>
+      <div class="layer-card layer-geo reveal">
+        <div class="layer-eyebrow">Layer 2</div>
+        <div class="layer-name">GEO</div>
+        <div class="layer-full">Generative Engine Optimization</div>
+        <div class="layer-rows">
+          <div><div class="layer-row-label">Goal</div><div class="layer-row-val">Be cited or recommended by AI search — Claude, ChatGPT, Perplexity.</div></div>
+          <div><div class="layer-row-label">Optimizing for</div><div class="layer-row-val">AI training data, retrieval systems, source authority.</div></div>
+          <div><div class="layer-row-label">Key signals</div><div class="layer-row-val">Source credibility, well-structured facts, clear entity data, citations.</div></div>
+          <div><div class="layer-row-label">Outcome</div><div class="layer-row-val">Your brand appears in AI-generated answers as a trusted source.</div></div>
+        </div>
+      </div>
+      <div class="layer-card layer-aeo reveal">
+        <div class="layer-eyebrow">Layer 3</div>
+        <div class="layer-name">AEO</div>
+        <div class="layer-full">Answer Engine Optimization</div>
+        <div class="layer-rows">
+          <div><div class="layer-row-label">Goal</div><div class="layer-row-val">Be the direct answer — in AI Overviews, featured snippets, or voice.</div></div>
+          <div><div class="layer-row-label">Optimizing for</div><div class="layer-row-val">Question-answer pairs, concise structured content.</div></div>
+          <div><div class="layer-row-label">Key signals</div><div class="layer-row-val">FAQ schema, direct answers, conversational phrasing, conciseness.</div></div>
+          <div><div class="layer-row-label">Outcome</div><div class="layer-row-val">Your content is surfaced above organic results as the definitive answer.</div></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ DEMO ═══ -->
+<section id="demo">
+  <div class="container">
+    <div class="demo-inner">
+      <div class="reveal">
+        <div class="section-label demo-label">
+          <svg width="12" height="12" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><polygon points="10 8 16 12 10 16 10 8" fill="currentColor" stroke="none"/></svg>
+          See It In Action
+        </div>
+        <h2 class="demo-title">Watch Claude audit a site from scratch</h2>
+        <p class="demo-desc">Paste any URL. Claude crawls the site, returns a score table in seconds, then generates a full agency-grade DOCX + PDF report — no extra steps, no dashboards.</p>
+        <div class="demo-actions">
+          <a href="#cta-section" class="btn btn-primary btn-lg">
+            <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path d="M12 15V3m0 12-4-4m4 4 4-4M3 21h18"/></svg>
+            Download the Skill
+          </a>
+          <a href="https://www.linkedin.com/in/aeden-manell/" target="_blank" class="btn btn-linkedin btn-lg">
+            <svg width="16" height="16" fill="#fff" viewBox="0 0 24 24"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 0 1-2.063-2.065 2.064 2.064 0 1 1 2.063 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg>
+            Connect with me
+          </a>
+        </div>
+      </div>
+      <div class="demo-visual reveal">
+        <div class="demo-terminal-bar">
+          <div class="demo-dot demo-dot-r"></div>
+          <div class="demo-dot demo-dot-y"></div>
+          <div class="demo-dot demo-dot-g"></div>
+          <div class="demo-terminal-title">Claude · SEO Skill</div>
+        </div>
+        <div class="demo-chat">
+          <div class="demo-msg demo-msg-user">Audit https://yourwebsite.com — Full Audit please</div>
+          <div class="demo-msg demo-msg-claude">
+            Fetching <strong>robots.txt</strong> and <strong>sitemap.xml</strong>…<br/>
+            Discovered 12 pages. Crawling: Homepage, About, Services, Blog ×5, FAQ, Contact…<br/><br/>
+            ✓ Crawl complete. Scoring SEO, GEO & AEO…
+          </div>
+          <div class="demo-score-row">
+            <div class="demo-score-chip highlight"><span>SEO</span><span>8/10</span></div>
+            <div class="demo-score-chip"><span>GEO</span><span>7/10</span></div>
+            <div class="demo-score-chip"><span>AEO</span><span>6/10</span></div>
+          </div>
+          <div class="demo-msg demo-msg-claude">
+            <strong>Top 3 priorities:</strong><br/>
+            1. Add FAQ schema to 5 blog pages<br/>
+            2. Improve E-E-A-T signals on About page<br/>
+            3. Add concise answer blocks for head terms<br/><br/>
+            <strong>Biggest strength:</strong> Strong title & meta coverage (88%)<br/><br/>
+            Generating your DOCX + PDF report now…
+          </div>
+          <div class="demo-msg demo-msg-user" style="font-size:11px;opacity:.75;display:flex;align-items:center;gap:6px;">
+            <svg width="12" height="12" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+            yourwebsite-audit-march-2026.docx (ready)
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ FAQ ═══ -->
+<section id="faq">
+  <div class="container">
+    <div class="faq-header reveal">
+      <div class="section-label">
+        <svg width="12" height="12" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/><line x1="12" y1="17" x2="12.01" y2="17" stroke-width="3" stroke-linecap="round"/></svg>
+        FAQs
+      </div>
+      <h2 class="section-title" style="margin-top:16px">Frequently Asked Questions</h2>
+    </div>
+    <div class="faq-list">
+
+      <div class="faq-item reveal">
+        <div class="faq-q">What is the Claude SEO Skill?
+          <div class="faq-icon"><svg width="11" height="11" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg></div>
+        </div>
+        <div class="faq-a"><div class="faq-a-inner">The Claude SEO Skill is a specialized capability you invoke inside any Claude conversation. It performs comprehensive SEO, GEO, and AEO audits for any website URL you provide. Simply invoke it and paste your URL; Claude handles crawling, scoring, and generating a professional downloadable report.</div></div>
+      </div>
+
+      <div class="faq-item reveal">
+        <div class="faq-q">What is Generative Engine Optimization (GEO)?
+          <div class="faq-icon"><svg width="11" height="11" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg></div>
+        </div>
+        <div class="faq-a"><div class="faq-a-inner">GEO is the practice of optimizing your content so that AI-powered search engines — like ChatGPT Search, Perplexity, Claude, and Gemini — are more likely to cite, recommend, or reference your site when answering user queries. Unlike traditional SEO which targets algorithms, GEO targets AI retrieval systems and focuses on source credibility, well-structured factual content, clear entity signals, and authority indicators.</div></div>
+      </div>
+
+      <div class="faq-item reveal">
+        <div class="faq-q">What is Answer Engine Optimization (AEO)?
+          <div class="faq-icon"><svg width="11" height="11" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg></div>
+        </div>
+        <div class="faq-a"><div class="faq-a-inner">AEO is optimizing your content to become the direct answer — not just a ranked result. This includes appearing in Google's AI Overviews, featured snippets, People Also Ask boxes, and voice search results. AEO focuses on structuring content with clear question-answer pairs, adding FAQ and HowTo schema markup, and writing concise, definitive answers that answer engines can directly surface.</div></div>
+      </div>
+
+      <div class="faq-item reveal">
+        <div class="faq-q">How is this different from tools like Ahrefs or Semrush?
+          <div class="faq-icon"><svg width="11" height="11" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg></div>
+        </div>
+        <div class="faq-a"><div class="faq-a-inner">Ahrefs and Semrush are great for backlink research, keyword tracking, and competitive analysis — but they don't audit for GEO or AEO. The Claude SEO Skill goes beyond traditional SEO to analyze how your content performs in the AI-search era, and delivers an instant agency-quality DOCX + PDF report with zero subscription cost.</div></div>
+      </div>
+
+      <div class="faq-item reveal">
+        <div class="faq-q">What's the difference between Quick and Full Audit?
+          <div class="faq-icon"><svg width="11" height="11" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg></div>
+        </div>
+        <div class="faq-a"><div class="faq-a-inner">The Quick Audit takes 1–2 minutes and covers the highest-priority signals across up to 7 key pages — ideal for a fast health check. The Full Audit takes 5–10 minutes and crawls every meaningful page on your site with no arbitrary cap, giving you the most comprehensive SEO, GEO, and AEO picture possible. Both produce a DOCX + PDF report.</div></div>
+      </div>
+
+      <div class="faq-item reveal">
+        <div class="faq-q">Does it really crawl the whole site, not just the homepage?
+          <div class="faq-icon"><svg width="11" height="11" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg></div>
+        </div>
+        <div class="faq-a"><div class="faq-a-inner">Yes. Claude fetches your homepage, robots.txt, and sitemap.xml in parallel to build a complete map of your site. It then crawls your About, Services, Blog, Case Studies, Contact, and FAQ pages — drawing conclusions from the full picture, not just your front door.</div></div>
+      </div>
+
+      <div class="faq-item reveal">
+        <div class="faq-q">Do I need a Claude subscription to use this?
+          <div class="faq-icon"><svg width="11" height="11" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg></div>
+        </div>
+        <div class="faq-a"><div class="faq-a-inner">The skill itself is completely free and open source. However, since it runs inside Claude, you'll need access to Claude — either through Claude.ai (free tier available) or via the Anthropic API. For best results with Full Audits on large sites, Claude Pro or API access is recommended due to the amount of content being processed.</div></div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- ═══ BLOG ═══ -->
+<section id="blog">
+  <div class="container">
+    <div class="blog-header reveal">
+      <div class="section-label">
+        <svg width="12" height="12" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/></svg>
+        From the Blog
+      </div>
+      <h2 class="section-title" style="margin-top:16px">SEO, GEO & AEO <em style="font-style:italic;color:var(--orange)">Insights</em></h2>
+      <p class="section-subtitle">Deep dives into the strategies, signals, and systems shaping how content gets found, cited, and answered in 2026.</p>
+    </div>
+
+    <div class="blog-grid">
+
+      <!-- ── FEATURED POST ── -->
+      <div class="blog-card-featured reveal">
+        <div class="blog-card-visual" style="background:linear-gradient(135deg,#1a0e06 0%,#2d1708 50%,#1a0e06 100%);position:relative;overflow:hidden;">
+          <div style="position:absolute;inset:0;background:radial-gradient(circle at 60% 40%,rgba(217,119,87,0.25) 0%,transparent 65%);"></div>
+          <div class="blog-visual-icon" style="position:relative;z-index:1;">
+            <svg width="36" height="36" fill="none" stroke="#fff" stroke-width="2" viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+          </div>
+        </div>
+        <div class="blog-card-body">
+          <div class="blog-tag">
+            <svg width="9" height="9" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+            Featured · Strategy
+          </div>
+          <div class="blog-card-title">A Strategic Look at SEO, AEO, and GEO in 2026</div>
+          <p class="blog-card-excerpt">In 2026, the search landscape has undergone a seismic shift. Gone are the days when ranking high on Google with a list of blue links was the ultimate goal. AI search engines now prioritize understanding over click-throughs — assessing whether content can be interpreted, trusted, and reused to generate direct answers. This shift has redefined the optimization goal from ranking to being referenced.</p>
+          <div class="blog-card-meta">
+            <div class="blog-card-meta-item">
+              <svg width="11" height="11" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+              March 2026
+            </div>
+            <div class="blog-card-meta-item">
+              <svg width="11" height="11" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+              8 min read
+            </div>
+            <div class="blog-card-meta-item">By Nthabeleng Aeden Manell</div>
+          </div>
+          <a href="https://www.linkedin.com/pulse/strategic-look-seo-aeo-geo-2026-aeden-manell-5disf/?trackingId=0TLYtVmrkLOmT7IqawYnXw%3D%3D" target="_blank" class="blog-read-link">
+            Read on LinkedIn
+            <svg width="13" height="13" fill="none" stroke="currentColor" stroke-width="2.2" viewBox="0 0 24 24"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+          </a>
+        </div>
+      </div>
+
+    </div><!-- /blog-grid -->
+
+  </div>
+</section>
+
+<!-- ═══ CTA ═══ -->
+<section id="cta-section">
+  <div class="cta-glow"></div>
+  <div class="container">
+    <div class="cta-inner reveal">
+      <div class="cta-eyebrow">
+        <svg width="11" height="11" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+        Ready to Audit Your Site?
+      </div>
+      <h2 class="cta-title">Download the skill.<br/>Paste a URL. Get a full<br/><em>report in minutes.</em></h2>
+      <p class="cta-desc">Free & open source. Works inside Claude. No dashboard, no subscription, no setup — just results.</p>
+      <div class="cta-btns">
+        <a href="https://github.com/nthabelengaedenmanell/SEO-GEO-AEO-Audit-Skill-for-Claude/tree/main" target="_blank" class="btn btn-primary btn-lg">
+          <svg width="16" height="16" fill="currentColor" viewBox="0 0 24 24"><path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0 0 24 12c0-6.63-5.37-12-12-12z"/></svg>
+          Download on GitHub
+        </a>
+        <a href="https://www.linkedin.com/in/aeden-manell/" target="_blank" class="btn btn-linkedin btn-lg">
+          <svg width="16" height="16" fill="#fff" viewBox="0 0 24 24"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 0 1-2.063-2.065 2.064 2.064 0 1 1 2.063 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg>
+          Connect with me
+        </a>
+      </div>
+      <p class="cta-note">Free & open source · Works inside Claude · DOCX + PDF report · Built by Nthabeleng Aeden Manell</p>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ FOOTER ═══ -->
+<footer>
+  <div class="container">
+    <div class="footer-inner">
+      <div class="footer-brand">
+        <a href="#" class="footer-logo">
+          <div class="footer-logo-icon">
+            <svg width="15" height="15" fill="none" stroke="#fff" stroke-width="2.2" viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
+          </div>
+          <div class="footer-logo-text">Claude SEO Skill</div>
+        </a>
+        <p class="footer-tagline">AI-powered SEO, GEO & AEO audits — free, open source, and built for the AI search era.</p>
+      </div>
+      <div>
+        <div class="footer-links-title">Navigation</div>
+        <ul class="footer-links">
+          <li><a href="#features">Features</a></li>
+          <li><a href="#how-it-works">How It Works</a></li>
+          <li><a href="#audit-types">Audit Types</a></li>
+          <li><a href="#demo">Demo</a></li>
+          <li><a href="#faq">FAQ</a></li>
+          <li><a href="#blog">Blog</a></li>
+        </ul>
+      </div>
+      <div>
+        <div class="footer-links-title">Resources</div>
+        <ul class="footer-links">
+          <li><a href="https://github.com/nthabelengaedenmanell/SEO-GEO-AEO-Audit-Skill-for-Claude/tree/main" target="_blank">GitHub</a></li>
+          <li><a href="https://claude.ai" target="_blank">Claude.ai</a></li>
+          <li><a href="https://anthropic.com" target="_blank">Anthropic</a></li>
+        </ul>
+      </div>
+      <div>
+        <div class="footer-links-title">Get Started</div>
+        <a href="#cta-section" class="btn btn-primary" style="font-size:13px;padding:11px 20px;">
+          Download the Skill
+        </a>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <p class="footer-copy">
+        © 2026 claudeseoskill.com · Claude Skill & Plugin by <a href="https://www.linkedin.com/in/aeden-manell/" target="_blank">Nthabeleng Aeden Manell</a> · Powered by <a href="https://anthropic.com" target="_blank">Anthropic</a>
+      </p>
+      <div class="footer-socials">
+        <a href="https://www.linkedin.com/in/aeden-manell/" target="_blank" class="footer-social-btn" aria-label="LinkedIn">
+          <svg width="14" height="14" fill="currentColor" viewBox="0 0 24 24"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 0 1-2.063-2.065 2.064 2.064 0 1 1 2.063 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg>
+        </a>
+        <a href="https://github.com/nthabelengaedenmanell/SEO-GEO-AEO-Audit-Skill-for-Claude/tree/main" target="_blank" class="footer-social-btn" aria-label="GitHub">
+          <svg width="14" height="14" fill="currentColor" viewBox="0 0 24 24"><path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0 0 24 12c0-6.63-5.37-12-12-12z"/></svg>
+        </a>
+        <a href="https://twitter.com" target="_blank" class="footer-social-btn" aria-label="Twitter/X">
+          <svg width="13" height="13" fill="currentColor" viewBox="0 0 24 24"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>
+        </a>
+      </div>
+    </div>
+  </div>
+</footer>
+
+<!-- ═══ SCRIPTS ═══ -->
+<script>
+  // Navbar scroll
+  const navbar = document.getElementById('navbar');
+  window.addEventListener('scroll', () => { navbar.classList.toggle('scrolled', window.scrollY > 20); }, { passive: true });
+
+  // Mobile menu
+  const hamburger = document.getElementById('hamburger');
+  const mobileMenu = document.getElementById('mobile-menu');
+  hamburger.addEventListener('click', () => {
+    const open = mobileMenu.classList.toggle('open');
+    const s = hamburger.querySelectorAll('span');
+    s[0].style.transform = open ? 'rotate(45deg) translate(5px,5px)' : '';
+    s[1].style.opacity = open ? '0' : '1';
+    s[2].style.transform = open ? 'rotate(-45deg) translate(5px,-5px)' : '';
+  });
+  mobileMenu.querySelectorAll('a').forEach(a => a.addEventListener('click', () => {
+    mobileMenu.classList.remove('open');
+    const s = hamburger.querySelectorAll('span');
+    s[0].style.transform = ''; s[1].style.opacity = '1'; s[2].style.transform = '';
+  }));
+
+  // FAQ accordion
+  document.querySelectorAll('.faq-q').forEach(q => {
+    q.addEventListener('click', () => {
+      const item = q.closest('.faq-item');
+      const isOpen = item.classList.contains('open');
+      document.querySelectorAll('.faq-item.open').forEach(i => i.classList.remove('open'));
+      if (!isOpen) item.classList.add('open');
+    });
+  });
+
+  // Scroll reveal
+  const obs = new IntersectionObserver(entries => {
+    entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('revealed'); obs.unobserve(e.target); } });
+  }, { threshold: 0.1, rootMargin: '0px 0px -36px 0px' });
+  document.querySelectorAll('.reveal').forEach(el => obs.observe(el));
+
+  // Hero fade-up
+  const fadeObs = new IntersectionObserver(entries => {
+    entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('visible'); fadeObs.unobserve(e.target); } });
+  }, { threshold: 0.05 });
+  document.querySelectorAll('.fade-up').forEach(el => fadeObs.observe(el));
+
+  // Animate hero bars
+  window.addEventListener('load', () => {
+    setTimeout(() => {
+      document.querySelectorAll('.hero-bar-fill').forEach(fill => {
+        const w = fill.style.width; fill.style.width = '0%';
+        requestAnimationFrame(() => setTimeout(() => { fill.style.width = w; }, 80));
+      });
+    }, 350);
+  });
+
+  // Active nav link
+  const sections = document.querySelectorAll('section[id]');
+  const navLinks = document.querySelectorAll('.nav-links a');
+  window.addEventListener('scroll', () => {
+    let cur = '';
+    sections.forEach(s => { if (window.scrollY >= s.offsetTop - 90) cur = s.id; });
+    navLinks.forEach(a => { a.style.color = a.getAttribute('href') === '#' + cur ? 'var(--orange)' : ''; });
+  }, { passive: true });
+</script>
+</body>
+</html>
